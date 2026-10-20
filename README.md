@@ -56,9 +56,11 @@ python3 tools/check_consumers.py --render ../pebble-mondrian ../pebble-undergrou
 
 Commit/share the tested kit change on this repository's `main` first. Each
 consumer's next `npm run release` automatically fetches it. Use a kit branch
-for work in progress; keep `main` suitable for releases. GitHub Actions runs
-the deterministic kit suite; cross-consumer SDK/render checks run locally with
-the existing SDK and Watchface Lab. They are required by AGENTS.md before main.
+for work in progress; keep `main` suitable for releases. The deterministic kit suite and cross-consumer SDK/render checks run locally
+with the existing SDK and Watchface Lab. They are required by AGENTS.md before
+main. `ci/github-actions-tests.yml` is an optional Actions workflow template;
+copy it to `.github/workflows/tests.yml` using a GitHub credential with workflow
+permission to activate CI. The initial publishing token lacks that permission.
 
 `docs/copied-kit-history.md` preserves historical protocol and validation notes.
 Its old copy-to-next-face instructions are superseded by this repository.
