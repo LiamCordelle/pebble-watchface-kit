@@ -1,0 +1,37 @@
+'use strict';
+var assert=require('assert');
+var start=require('../src/pkjs/kit/bootstrap');
+['mondrian','underground'].forEach(function(name) {
+  var key=name+'-kit-settings-v1', handlers={}, sent=[], memory={}, rendered;
+  memory[key]=JSON.stringify({TIME_MODE:2,STEP_GOAL:18000,TEMP_UNIT:1});
+  global.localStorage={getItem:function(k){return memory[k]||null;},
+    setItem:function(k,v){memory[k]=v;}};
+  global.Pebble={
+    addEventListener:function(event,handler){handlers[event]=handler;},
+    sendAppMessage:function(value,ok){sent.push(value);ok();},
+    openURL:function(value){assert.strictEqual(value,'configuration-url');}
+  };
+  function Clay(schema,unused,options) {
+    assert.strictEqual(options.autoHandleEvents,false);
+    assert.strictEqual(schema[0].defaultValue,name);
+    this.setSettings=function(value){rendered=value;};
+    this.generateUrl=function(){return 'configuration-url';};
+    this.getSettings=function(){return {TIME_MODE:1,TEMP_UNIT:0,STEP_GOAL:9000,LARGE_LABELS:true};};
+  }
+  start({heading:name,storageKey:key,largeLabels:name==='mondrian'},Clay);
+  handlers.ready();
+  assert.strictEqual(sent[0].READY,1);
+  assert.strictEqual(sent[0].STEP_GOAL,18000);
+  assert.strictEqual(rendered.TEMP_UNIT,1);
+  assert.strictEqual(typeof rendered.WEATHER_ENABLED,'boolean');
+  handlers.showConfiguration();
+  handlers.webviewclosed({response:'CANCELLED'});
+  assert.strictEqual(sent.length,1);
+  handlers.webviewclosed({response:'settings-response'});
+  assert.strictEqual(sent[1].TIME_MODE,1);
+  assert.strictEqual(sent[1].LARGE_LABELS,1);
+  assert.strictEqual(JSON.parse(memory[key]).STEP_GOAL,9000);
+});
+delete global.localStorage;
+delete global.Pebble;
+console.log('Phone bootstrap passed: existing settings, ready/send, Clay opening/save and cancellation.');

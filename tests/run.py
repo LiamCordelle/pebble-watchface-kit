@@ -12,6 +12,7 @@ OUT.mkdir(parents=True,exist_ok=True)
 def run(args): subprocess.run(args,cwd=ROOT,check=True)
 run(['node','tests/phone.test.js'])
 run(['node','tests/config.test.js'])
+run(['node','tests/bootstrap.test.js'])
 run(['cc','-std=c11','-Wall','-Wextra','-Werror','tests/core.test.c','src/c/kit/kit_core.c','-o',str(OUT/'core-tests')])
 run([str(OUT/'core-tests'),str(OUT/'weather.bin')])
 run(['cc','-std=c11','-D_DARWIN_C_SOURCE','-DPBL_HEALTH',
@@ -43,3 +44,4 @@ for year in range(2024,2038):
             checks+=1
         stamp+=6*3600
 print(f'Time zones passed {checks:,} independent zoneinfo comparisons (2024–2037).')
+run(['python3','tests/workflow.test.py'])

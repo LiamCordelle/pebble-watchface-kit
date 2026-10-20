@@ -1,4 +1,7 @@
-# Watchface kit 1.3
+# Archived copied-kit history (through 1.3)
+
+Historical release evidence only. Integration, ownership and copying instructions
+below are obsolete. Follow the root README.md and AGENTS.md for the shared kit.
 
 Established by `pebble-mondrian` on 18 October 2026. No earlier sibling kit
 existed. This is a copied-source kit, with no runtime dependency on the lab,
