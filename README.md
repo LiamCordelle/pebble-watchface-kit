@@ -1,6 +1,9 @@
 # Pebble watchface kit
 
-Shared C and PebbleKit JS for Mondrian and Underground. Version 2.0.0 extracts
+Version 2.1.1 adds bounded text consumer settings to 2.1.0; see
+[src/c/kit/KIT.md](src/c/kit/KIT.md).
+
+Shared C and PebbleKit JS for standalone Pebble watchfaces. Version 2.0.0 extracts
 Underground kit 1.3 (including Mondrian's recorded-minute HR history fix) into
 one repository. Each PBW includes the code it needs; there is no shared runtime.
 Signal Deck has not been migrated.

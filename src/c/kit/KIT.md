@@ -1,4 +1,4 @@
-# Shared kit 2.1.0
+# Shared kit 2.1.1
 
 2.1.0 adds optional consumer settings and optional drawing resources to 2.0.0.
 Released on 22 October 2026 after shared native/phone tests, both existing
@@ -56,3 +56,31 @@ forecast/cache, synthetic health and status checks pass on Emery. Three starts,
 three exits with zero app allocations, 4–16ms frames and no app faults. The saved
 SDK profile was restored and QEMU stopped. Consumer-specific evidence lives in
 Word Clock's shots/emulator directory; no other kit checkout was changed.
+
+## 2.1.1 — text consumer settings (22 October 2026)
+
+`faceSettings` also accepts Clay `input` items with a string `defaultValue`.
+Values remain strings through Clay, storage and the serialized AppMessage queue.
+Optional `normalizeFaceSetting(key, text)` lets the consumer validate text while
+keeping its meaning in the face. The normalizer must return a string; otherwise
+its default is used. `attributes.maxlength` caps the result (1–128 characters;
+64 when omitted). Common numeric keys stay reserved and unchanged. The existing
+weak C settings hooks restore/apply the consumer's text record, so no parallel
+receiver interface or copied implementation is required. Quest uses this for
+its eight-character name with watch persistence key 2000.
+
+Regression tests cover text defaults, invalid types, custom normalization,
+maximum length, namespace isolation, phone storage and Clay ready/save transport.
+The release helper `tools/update_release.py` is unchanged and remains Python;
+build metadata/receipts belong under the consumer's ignored build directory.
+
+2.1.1 release validation: shared deterministic tests and workflow safeguards
+pass; Mondrian/Underground isolated builds and 36/62 render scenes pass. Quest
+passes all 76 renders with approved pixels unchanged. Its real Clay text setting,
+12-hour/Fahrenheit modes, correlated weather, cold name/settings/cache restart,
+status chips and eight-second detail timeout pass in Emery. Both explicit exits
+leave zero allocations. Typical QEMU frame wall times are 6–28ms with one
+1010ms outlier; physical watch CPU timing and touch power remain unmeasured.
+The prior SDK profile was restored and QEMU stopped. Evidence is in Quest's
+shots/emulator directory. The weather wire format and shared settings records
+remain unchanged.

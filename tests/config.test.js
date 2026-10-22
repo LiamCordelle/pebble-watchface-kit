@@ -48,3 +48,17 @@ assert.strictEqual(ext.load(storage).CUSTOM_MODE,1);
 assert.strictEqual(ext.load(storage).CUSTOM_LIT,1);
 assert(!Object.hasOwn(sb.normalize({CUSTOM_MODE:2}),'CUSTOM_MODE'));
 console.log('Consumer settings extension: schema, bounds, persistence and isolation passed.');
+
+var textOptions={heading:'Example',storageKey:'text-test',faceSettings:[
+ {type:'input',messageKey:'CAPTION',defaultValue:'DEFAULT',attributes:{maxlength:8}}],
+ normalizeFaceSetting:function(key,value){return value.toUpperCase();}};
+var textSettings=makeSettings(textOptions);
+assert.strictEqual(textSettings.normalize({}).CAPTION,'DEFAULT');
+assert.strictEqual(textSettings.normalize({CAPTION:{value:'abcdefghij'}}).CAPTION,'ABCDEFGH');
+assert.strictEqual(textSettings.normalize({CAPTION:42}).CAPTION,'DEFAULT');
+textSettings.save(storage,{CAPTION:'caption'});assert.strictEqual(textSettings.load(storage).CAPTION,'CAPTION');
+assert.strictEqual(sa.normalize({}).CAPTION,undefined);
+var rawText=makeSettings({storageKey:'raw-text',faceSettings:[{type:'input',messageKey:'TEXT',defaultValue:'X'}]});
+assert.strictEqual(rawText.normalize({TEXT:'keep Me'}).TEXT,'keep Me');
+assert.strictEqual(rawText.normalize({TEXT:'x'.repeat(100)}).TEXT.length,64);
+console.log('Text consumer settings pass defaults, normalization, bounds and storage.');

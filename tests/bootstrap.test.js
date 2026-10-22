@@ -43,3 +43,15 @@ var start=require('../src/pkjs/kit/bootstrap');
 delete global.localStorage;
 delete global.Pebble;
 console.log('Phone bootstrap passed: existing settings, ready/send, Clay opening/save and cancellation.');
+
+var textHandlers={},textSent=[],textMemory={},textRendered;
+global.localStorage={getItem:function(k){return textMemory[k]||null;},setItem:function(k,v){textMemory[k]=v;}};
+global.Pebble={addEventListener:function(k,v){textHandlers[k]=v;},sendAppMessage:function(v,ok){textSent.push(v);ok();}};
+function TextClay(){this.setSettings=function(v){textRendered=v;};this.getSettings=function(){return {CAPTION:'custom'};};}
+start({heading:'Text',storageKey:'text',faceSettings:[{type:'input',messageKey:'CAPTION',defaultValue:'DEFAULT',attributes:{maxlength:8}}],
+ normalizeFaceSetting:function(key,value){return value.toUpperCase();}},TextClay);
+textHandlers.ready();assert.strictEqual(textSent[0].CAPTION,'DEFAULT');
+textHandlers.webviewclosed({response:'save'});assert.strictEqual(textSent[1].CAPTION,'CUSTOM');
+assert.strictEqual(textRendered.CAPTION,'CUSTOM');assert.strictEqual(JSON.parse(textMemory.text).CAPTION,'CUSTOM');
+delete global.localStorage;delete global.Pebble;
+console.log('Text settings pass Clay ready/save and serialized transport.');

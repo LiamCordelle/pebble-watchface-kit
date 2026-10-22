@@ -27,8 +27,17 @@ function normalize(raw) {
   (options.faceSettings || []).forEach(function(item) {
     var key=item.messageKey;
     if (!key || Object.prototype.hasOwnProperty.call(DEFAULTS,key)) return;
-    result[key]=item.type==='toggle' ? flag(flat[key],flag(item.defaultValue,0)) :
-      number(flat[key],item.min,item.max,Number(item.defaultValue));
+    if (item.type==='input') {
+      var fallback=typeof item.defaultValue==='string'?item.defaultValue:'';
+      var text=typeof flat[key]==='string'?flat[key]:fallback;
+      if (typeof options.normalizeFaceSetting==='function') text=options.normalizeFaceSetting(key,text);
+      if (typeof text!=='string') text=fallback;
+      var maximum=number((item.attributes || {}).maxlength,1,128,64);
+      result[key]=text.slice(0,maximum);
+    } else {
+      result[key]=item.type==='toggle' ? flag(flat[key],flag(item.defaultValue,0)) :
+        number(flat[key],item.min,item.max,Number(item.defaultValue));
+    }
   });
   return result;
 }
