@@ -42,6 +42,20 @@ class LogReader:
     def report(self, since=0):
         return parse_log(self.read(since))
 
+    def wait_clean_exit(self, name, since=0, timeout=12):
+        deadline = time.monotonic()+timeout
+        while time.monotonic() < deadline:
+            for exit_record in self.report(since)['exits']:
+                # PebbleOS may truncate the bracketed name, including its >.
+                # The caller verifies the UUID before stop and scopes this to
+                # that stop's byte cursor; unrelated or old exits cannot pass.
+                if name.startswith(exit_record['app']):
+                    if exit_record['allocated_bytes']:
+                        raise RuntimeError('App retained allocations on stop: '+str(exit_record))
+                    return exit_record
+            time.sleep(.2)
+        raise RuntimeError('Clean exit was not observed for '+name)
+
 
 def parse_log(text):
     frames = [{'view': view, 'wall_ms': int(ms)}
@@ -194,10 +208,10 @@ class EmulatorSession:
         self.assert_active()
 
     def stop(self):
+        self.assert_active()
         mark = self.logs.mark()
         self.connection.send_packet(self.sdk.AppRunState(data=self.sdk.AppRunStateStop(uuid=self.uuid)))
-        pattern = r'Heap Usage for App <'+re.escape(self.name)+r'>?:[^\n]*Still allocated <0B>'
-        self.logs.wait(pattern, since=mark)
+        self.logs.wait_clean_exit(self.name, since=mark)
 
     def restart(self):
         self.stop()

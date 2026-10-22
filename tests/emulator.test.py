@@ -36,6 +36,16 @@ class EmulatorUtilities(unittest.TestCase):
         with self.assertRaises(ValueError):emulator.encode_settings({'UNKNOWN':0},keys,sdk)
         with self.assertRaises(ValueError):emulator.encode_settings({'A':1.2},keys,sdk)
 
+    def test_truncated_exit_name_and_current_stop_window(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path=Path(temp)/'log';path.write_text('Heap Usage for App <Other>: Still allocated <0B>\n')
+            logs=emulator.LogReader(path);mark=logs.mark()
+            with path.open('a') as out:out.write('Heap Usage for App <Undergroun: Still allocated <0B>\n')
+            self.assertEqual(logs.wait_clean_exit('Underground',mark)['allocated_bytes'],0)
+            mark=logs.mark()
+            with path.open('a') as out:out.write('Heap Usage for App <Undergroun: Still allocated <4B>\n')
+            with self.assertRaisesRegex(RuntimeError,'retained allocations'):logs.wait_clean_exit('Underground',mark)
+
     def session(self, root):
         project=root/'project';project.mkdir()
         (project/'package.json').write_text(json.dumps({'pebble':{'displayName':'Example','uuid':'00000000-0000-0000-0000-000000000001'}}))
