@@ -17,7 +17,7 @@ var schema = [
   ]},
   {type:'section',items:[
     {type:'heading',defaultValue:'Data'},
-    {type:'slider',messageKey:'STEP_GOAL',label:'Step goal',defaultValue:10000,min:1000,max:50000,step:500},
+    {type:'slider',messageKey:'STEP_GOAL',label:'Step goal',defaultValue:8000,min:1000,max:50000,step:500},
     {type:'toggle',messageKey:'WEATHER_ENABLED',label:'Weather',defaultValue:true},
     {type:'toggle',messageKey:'DEMO_FALLBACK',label:'Demo values when health is unavailable',defaultValue:false}
   ]},

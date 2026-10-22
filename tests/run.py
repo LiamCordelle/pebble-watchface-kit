@@ -13,6 +13,10 @@ def run(args): subprocess.run(args,cwd=ROOT,check=True)
 run(['node','tests/phone.test.js'])
 run(['node','tests/config.test.js'])
 run(['node','tests/bootstrap.test.js'])
+run(['cc','-std=c11','-Itests/settings-stubs','-Wall','-Wextra','-Werror',
+     'tests/settings.test.c','src/c/kit/kit_settings.c','src/c/kit/kit_core.c',
+     '-o',str(OUT/'settings-tests')])
+run([str(OUT/'settings-tests')])
 run(['cc','-std=c11','-Wall','-Wextra','-Werror','tests/core.test.c','src/c/kit/kit_core.c','-o',str(OUT/'core-tests')])
 run([str(OUT/'core-tests'),str(OUT/'weather.bin')])
 run(['cc','-std=c11','-D_DARWIN_C_SOURCE','-DPBL_HEALTH',

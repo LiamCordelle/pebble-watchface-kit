@@ -2,7 +2,7 @@
 #ifndef LAB_HOST_RENDER
 #define SETTINGS_KEY 1000
 
-static KitSettings s_settings = {KIT_VERSION,0,0,0,10000,1,0,0,0};
+static KitSettings s_settings = {KIT_VERSION,0,0,0,KIT_DEFAULT_STEP_GOAL,1,0,0,0};
 
 static bool valid(const KitSettings *s) {
   return s->version == KIT_VERSION && s->time_mode <= 2 && s->temp_unit <= 1 &&
@@ -30,6 +30,7 @@ void kit_settings_init(void) {
       persist_read_data(SETTINGS_KEY, &saved, sizeof(saved)) == sizeof(saved) && valid(&saved)) {
     s_settings = saved;
   }
+  APP_LOG(APP_LOG_LEVEL_INFO, "Kit settings loaded: goal=%ld", (long)s_settings.step_goal);
 }
 
 bool kit_settings_receive(DictionaryIterator *iter) {

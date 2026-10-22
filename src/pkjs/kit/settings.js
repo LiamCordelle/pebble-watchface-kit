@@ -1,5 +1,5 @@
 'use strict';
-var DEFAULTS = {TIME_MODE:0,TEMP_UNIT:0,STEP_GOAL:10000,WORLD:0,
+var DEFAULTS = {TIME_MODE:0,TEMP_UNIT:0,STEP_GOAL:8000,WORLD:0,
   WEATHER_ENABLED:1,DEMO_FALLBACK:0,LARGE_LABELS:0};
 module.exports = function(options) {
 if (!options || !options.storageKey) throw new Error('A settings storageKey is required');
@@ -21,7 +21,7 @@ function normalize(raw) {
     flat[k] = raw[k] && typeof raw[k] === 'object' ? raw[k].value : raw[k];
   });
   var result = {TIME_MODE:number(flat.TIME_MODE,0,2,0),TEMP_UNIT:number(flat.TEMP_UNIT,0,1,0),
-    STEP_GOAL:number(flat.STEP_GOAL,1000,50000,10000),WORLD:number(flat.WORLD,0,6,0),
+    STEP_GOAL:number(flat.STEP_GOAL,1000,50000,DEFAULTS.STEP_GOAL),WORLD:number(flat.WORLD,0,6,0),
     WEATHER_ENABLED:flag(flat.WEATHER_ENABLED,1),DEMO_FALLBACK:flag(flat.DEMO_FALLBACK,0),
     LARGE_LABELS:flag(flat.LARGE_LABELS,0)};
   (options.faceSettings || []).forEach(function(item) {

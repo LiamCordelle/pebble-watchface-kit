@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 #define KIT_VERSION 1
+#define KIT_DEFAULT_STEP_GOAL 8000
 #define KIT_WEATHER_BYTES 204
 #define KIT_WEATHER_TTL 10800
 #define KIT_FORECAST_HOURS 48

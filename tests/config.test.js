@@ -13,6 +13,7 @@ function keys(schema) {
 var ma = makeConfig(a), mb = makeConfig(b);
 assert.strictEqual(ma[0].defaultValue,'Mondrian');
 assert.strictEqual(mb[0].defaultValue,'Underground');
+assert.strictEqual(ma[2].items.find(function(item){return item.messageKey==='STEP_GOAL';}).defaultValue,8000);
 assert(keys(ma).indexOf('LARGE_LABELS') >= 0);
 assert.strictEqual(keys(mb).indexOf('LARGE_LABELS'),-1);
 assert(keys(makeConfig(a)).indexOf('LARGE_LABELS') >= 0); // independent schemas

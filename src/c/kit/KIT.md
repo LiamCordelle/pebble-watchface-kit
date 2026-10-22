@@ -1,4 +1,11 @@
-# Shared kit 2.1.1
+# Shared kit 2.1.2
+
+## 2.1.2 — default step goal (22 October 2026)
+
+New watch settings, new phone settings and the Clay slider default to 8,000
+steps. Valid persisted settings are preserved, including an existing 10,000
+goal. `KIT_DEFAULT_STEP_GOAL` supplies the C fallback. Wire keys and persistence
+layouts are unchanged. Existing screenshot fixtures may keep explicit goals.
 
 2.1.0 adds optional consumer settings and optional drawing resources to 2.0.0.
 Released on 22 October 2026 after shared native/phone tests, both existing
