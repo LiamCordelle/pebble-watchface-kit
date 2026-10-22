@@ -150,6 +150,7 @@ GPoint lab_polar(GPoint center, int radius, int32_t angle) {
 }
 
 static GDrawCommandImage *weather_image(LabWxKind kind) {
+#ifdef RESOURCE_ID_WX_SUN
   static const uint32_t ids[LabWxUnknown] = {
     RESOURCE_ID_WX_SUN, RESOURCE_ID_WX_PARTLY, RESOURCE_ID_WX_CLOUDY, RESOURCE_ID_WX_FOG,
     RESOURCE_ID_WX_RAIN, RESOURCE_ID_WX_SNOW, RESOURCE_ID_WX_STORM
@@ -161,6 +162,9 @@ static GDrawCommandImage *weather_image(LabWxKind kind) {
     s_wx[kind] = gdraw_command_image_create_with_resource(ids[kind]);
   }
   return s_wx[kind];
+#else
+  return NULL;
+#endif
 }
 
 void lab_draw_weather_pdc(GContext *ctx, int weather_code, GPoint origin) {
@@ -171,6 +175,7 @@ void lab_draw_weather_pdc(GContext *ctx, int weather_code, GPoint origin) {
 }
 
 void lab_draw_sun_pdc(GContext *ctx, bool sunset, GPoint origin) {
+#ifdef RESOURCE_ID_SUN_RISE
   GDrawCommandImage **slot = sunset ? &s_sun_set : &s_sun_rise;
   if (!*slot) {
     *slot = gdraw_command_image_create_with_resource(sunset ? RESOURCE_ID_SUN_SET
@@ -179,20 +184,29 @@ void lab_draw_sun_pdc(GContext *ctx, bool sunset, GPoint origin) {
   if (*slot) {
     gdraw_command_image_draw(ctx, *slot, origin);
   }
+#endif
 }
 
 GFont lab_font_pixel8(void) {
+#ifdef RESOURCE_ID_FONT_PIXEL_8
   if (!s_pixel8) {
     s_pixel8 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_PIXEL_8));
   }
   return s_pixel8;
+#else
+  return fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD);
+#endif
 }
 
 GFont lab_font_pixel16(void) {
+#ifdef RESOURCE_ID_FONT_PIXEL_16
   if (!s_pixel16) {
     s_pixel16 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_PIXEL_16));
   }
   return s_pixel16;
+#else
+  return fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD);
+#endif
 }
 
 void lab_release_shared(void) {

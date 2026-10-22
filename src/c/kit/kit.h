@@ -32,6 +32,9 @@ void kit_weather_enabled(bool enabled);
 void kit_weather_ready(void);
 
 #ifndef LAB_HOST_RENDER
+// Optional consumer hooks; defaults are no-ops, consumer owns its persistence keys.
+void kit_consumer_settings_init(void);
+bool kit_consumer_settings_receive(DictionaryIterator *iter);
 bool kit_tuple_int(DictionaryIterator *iter, uint32_t key, int32_t *value);
 bool kit_settings_receive(DictionaryIterator *iter);
 void kit_weather_receive(DictionaryIterator *iter);

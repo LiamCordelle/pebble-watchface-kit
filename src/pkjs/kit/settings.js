@@ -20,10 +20,17 @@ function normalize(raw) {
   Object.keys(raw).forEach(function(k) {
     flat[k] = raw[k] && typeof raw[k] === 'object' ? raw[k].value : raw[k];
   });
-  return {TIME_MODE:number(flat.TIME_MODE,0,2,0),TEMP_UNIT:number(flat.TEMP_UNIT,0,1,0),
+  var result = {TIME_MODE:number(flat.TIME_MODE,0,2,0),TEMP_UNIT:number(flat.TEMP_UNIT,0,1,0),
     STEP_GOAL:number(flat.STEP_GOAL,1000,50000,10000),WORLD:number(flat.WORLD,0,6,0),
     WEATHER_ENABLED:flag(flat.WEATHER_ENABLED,1),DEMO_FALLBACK:flag(flat.DEMO_FALLBACK,0),
     LARGE_LABELS:flag(flat.LARGE_LABELS,0)};
+  (options.faceSettings || []).forEach(function(item) {
+    var key=item.messageKey;
+    if (!key || Object.prototype.hasOwnProperty.call(DEFAULTS,key)) return;
+    result[key]=item.type==='toggle' ? flag(flat[key],flag(item.defaultValue,0)) :
+      number(flat[key],item.min,item.max,Number(item.defaultValue));
+  });
+  return result;
 }
 function load(storage) {
   try { return normalize(JSON.parse(storage.getItem(STORAGE_KEY) || storage.getItem('clay-settings') || '{}')); }

@@ -27,5 +27,9 @@ var schema = [
 if (!options.largeLabels) schema[1].items = schema[1].items.filter(function(item) {
   return item.messageKey !== 'LARGE_LABELS' && item.type !== 'text';
 });
+if (options.faceSettings && options.faceSettings.length) {
+  schema.splice(schema.length-1,0,{type:'section',items:[
+    {type:'heading',defaultValue:'Watchface'}].concat(options.faceSettings)});
+}
 return schema;
 };

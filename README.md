@@ -16,6 +16,14 @@ key and optional larger-label UI. Settings and watch persistence retain their
 original formats. Keep each consumer's messageKeys in their existing order.
 `src/c/design.c`, scenarios, assets, UUID and app version remain consumer-owned.
 
+## 2.1.0 extension
+
+Version 2.1.0 adds optional face-specific Clay settings, weak C
+init/receive hooks and optional drawing resources. Existing consumers retain
+their common protocol, persistence and rendering. See
+[src/c/kit/KIT.md](src/c/kit/KIT.md) for the interface, validation and release
+requirements. Existing consumers do not need to opt into the extension.
+
 ## Building a watchface
 
 ```sh

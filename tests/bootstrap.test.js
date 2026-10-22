@@ -1,7 +1,7 @@
 'use strict';
 var assert=require('assert');
 var start=require('../src/pkjs/kit/bootstrap');
-['mondrian','underground'].forEach(function(name) {
+['mondrian','underground','custom'].forEach(function(name) {
   var key=name+'-kit-settings-v1', handlers={}, sent=[], memory={}, rendered;
   memory[key]=JSON.stringify({TIME_MODE:2,STEP_GOAL:18000,TEMP_UNIT:1});
   global.localStorage={getItem:function(k){return memory[k]||null;},
@@ -16,9 +16,11 @@ var start=require('../src/pkjs/kit/bootstrap');
     assert.strictEqual(schema[0].defaultValue,name);
     this.setSettings=function(value){rendered=value;};
     this.generateUrl=function(){return 'configuration-url';};
-    this.getSettings=function(){return {TIME_MODE:1,TEMP_UNIT:0,STEP_GOAL:9000,LARGE_LABELS:true};};
+    this.getSettings=function(){return {TIME_MODE:1,TEMP_UNIT:0,STEP_GOAL:9000,LARGE_LABELS:true,CUSTOM_LIT:true,CUSTOM_MODE:2};};
   }
-  start({heading:name,storageKey:key,largeLabels:name==='mondrian'},Clay);
+  start({heading:name,storageKey:key,largeLabels:name==='mondrian',faceSettings:name==='custom' ? [
+    {type:'toggle',messageKey:'CUSTOM_LIT',defaultValue:false},
+    {type:'select',messageKey:'CUSTOM_MODE',defaultValue:'0',min:0,max:2}] : []},Clay);
   handlers.ready();
   assert.strictEqual(sent[0].READY,1);
   assert.strictEqual(sent[0].STEP_GOAL,18000);
@@ -30,6 +32,12 @@ var start=require('../src/pkjs/kit/bootstrap');
   handlers.webviewclosed({response:'settings-response'});
   assert.strictEqual(sent[1].TIME_MODE,1);
   assert.strictEqual(sent[1].LARGE_LABELS,1);
+  if(name==='custom') {
+    assert.strictEqual(sent[1].CUSTOM_LIT,1);
+    assert.strictEqual(sent[1].CUSTOM_MODE,2);
+    assert.strictEqual(rendered.CUSTOM_LIT,true);
+    assert.strictEqual(JSON.parse(memory[key]).CUSTOM_MODE,2);
+  }
   assert.strictEqual(JSON.parse(memory[key]).STEP_GOAL,9000);
 });
 delete global.localStorage;

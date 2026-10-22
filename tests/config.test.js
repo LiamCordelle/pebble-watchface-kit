@@ -34,3 +34,17 @@ delete memory[b.storageKey];
 memory['clay-settings']=JSON.stringify({STEP_GOAL:21000});
 assert.strictEqual(sb.load(storage).STEP_GOAL,21000); // preserve legacy fallback
 console.log('Configuration tests passed: per-face UI, existing settings and isolated namespaces.');
+
+var extra={heading:'Custom',storageKey:'custom',faceSettings:[
+ {type:'toggle',messageKey:'CUSTOM_LIT',defaultValue:false},
+ {type:'select',messageKey:'CUSTOM_MODE',defaultValue:'0',min:0,max:2}]};
+assert(keys(makeConfig(extra)).includes('CUSTOM_LIT'));
+var ext=makeSettings(extra);
+assert.strictEqual(ext.normalize({CUSTOM_LIT:true,CUSTOM_MODE:99}).CUSTOM_MODE,2);
+assert.strictEqual(ext.normalize({CUSTOM_LIT:true}).CUSTOM_LIT,1);
+assert.strictEqual(ext.normalize({CUSTOM_MODE:null}).CUSTOM_MODE,0);
+ext.save(storage,{CUSTOM_MODE:1,CUSTOM_LIT:1});
+assert.strictEqual(ext.load(storage).CUSTOM_MODE,1);
+assert.strictEqual(ext.load(storage).CUSTOM_LIT,1);
+assert(!Object.hasOwn(sb.normalize({CUSTOM_MODE:2}),'CUSTOM_MODE'));
+console.log('Consumer settings extension: schema, bounds, persistence and isolation passed.');

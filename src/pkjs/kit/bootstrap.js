@@ -9,6 +9,9 @@ function syncClay() {
   var value={};Object.keys(settings).forEach(function(k){value[k]=settings[k];});
   value.WEATHER_ENABLED=!!value.WEATHER_ENABLED;value.DEMO_FALLBACK=!!value.DEMO_FALLBACK;
   value.LARGE_LABELS=!!value.LARGE_LABELS;
+  (options.faceSettings || []).forEach(function(item) {
+    if (item.type==='toggle') value[item.messageKey]=!!value[item.messageKey];
+  });
   clay.setSettings(value);
 }
 function sendSettings() {
