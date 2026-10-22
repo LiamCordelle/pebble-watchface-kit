@@ -13,6 +13,15 @@ def run(args): subprocess.run(args,cwd=ROOT,check=True)
 run(['node','tests/phone.test.js'])
 run(['node','tests/config.test.js'])
 run(['node','tests/bootstrap.test.js'])
+run(['node','tests/emulator.test.js'])
+run(['python3','tests/emulator.test.py'])
+run(['cc','-std=c11','-Wall','-Wextra','-Werror','tests/calc.test.c',
+     'src/c/kit/kit_calc.c','-o',str(OUT/'calc-tests')])
+run([str(OUT/'calc-tests')])
+run(['cc','-std=c11','-D_DARWIN_C_SOURCE','-Dtime=kit_test_time','-Itests/data-stubs',
+     '-Wall','-Wextra','-Werror','tests/data.test.c','src/c/kit/kit_data.c',
+     'src/c/kit/kit_calc.c','src/c/kit/kit_core.c','-o',str(OUT/'data-tests')])
+run([str(OUT/'data-tests')])
 run(['cc','-std=c11','-Itests/settings-stubs','-Wall','-Wextra','-Werror',
      'tests/settings.test.c','src/c/kit/kit_settings.c','src/c/kit/kit_core.c',
      '-o',str(OUT/'settings-tests')])

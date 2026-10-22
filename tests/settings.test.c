@@ -11,6 +11,7 @@ int persist_write_data(uint32_t key,const void *data,size_t n) {
 }
 Tuple *dict_find(DictionaryIterator *d,uint32_t key) { (void)d;(void)key;return NULL; }
 bool clock_is_24h_style(void) { return true; }
+void kit_world_fill(LabData *d,int zone) { (void)d;(void)zone; }
 int main(void) {
   kit_settings_init(); assert(kit_settings_get()->step_goal==8000);
   saved=*kit_settings_get();saved.step_goal=10000;saved_size=sizeof(saved);

@@ -47,6 +47,7 @@ void kit_weather_init(void (*changed)(void)) {
       persist_read_data(WEATHER_KEY,bytes,sizeof(bytes)) == sizeof(bytes)) {
     s_have_weather = kit_weather_decode(bytes,sizeof(bytes),time(NULL),&s_weather);
     if (!s_have_weather) persist_delete(WEATHER_KEY);
+    else APP_LOG(APP_LOG_LEVEL_INFO,"Weather cache restored (%u hours)",s_weather.count);
   }
   arm();
 }

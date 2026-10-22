@@ -6,7 +6,7 @@
 //   0 demo   - fixed Saturday-morning data, used for gallery screenshots
 //   1 stress - widest/longest values, to catch truncation and overflow
 //   2 empty  - no weather, no heart rate, zero steps, low battery, BT off
-//   3 live   - real watch sensors (weather stays on demo values: no phone JS)
+//   3 live   - real watch sensors, settings and shared-kit phone weather
 // ---------------------------------------------------------------------------
 #ifndef LAB_SCENARIO
 #define LAB_SCENARIO 0
@@ -24,7 +24,7 @@ typedef struct {
   bool is_24h;                // user's clock preference
   int minute_of_day;          // 0..1439
 
-  // Second time zone (Signal Deck default: NZ) ------------------------------
+  // Configured second time zone (default: NZ) ------------------------------
   char world_label[6];        // "NZ"
   int world_hour;             // 0..23
   int world_min;              // 0..59
@@ -46,7 +46,7 @@ typedef struct {
   int sleep_minutes;          // last night
 
   // Device -------------------------------------------------------------------
-  int battery_pct;            // true 0..100 (Signal Deck caps the label at 99%)
+  int battery_pct;            // true 0..100; the face owns label formatting
   bool charging;
   bool bt_connected;
 

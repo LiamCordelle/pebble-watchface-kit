@@ -58,12 +58,6 @@ void kit_settings_apply(LabData *d) {
   d->is_24h = s_settings.time_mode ? s_settings.time_mode == 2 : clock_is_24h_style();
   d->temp_fahrenheit = s_settings.temp_unit == 1;
   d->large_labels = s_settings.large_labels;
-  time_t world = d->epoch + kit_world_offset(s_settings.world, d->epoch) * 60;
-  struct tm t = *gmtime(&world);
-  snprintf(d->world_label, sizeof(d->world_label), "%s", kit_world_label(s_settings.world));
-  d->world_hour = t.tm_hour; d->world_min = t.tm_min;
-  int32_t local_day = kit_epoch(d->now.tm_year+1900,d->now.tm_mon+1,d->now.tm_mday,0);
-  int32_t world_day = kit_epoch(t.tm_year+1900,t.tm_mon+1,t.tm_mday,0);
-  d->world_day_delta = (world_day - local_day) / 86400;
+  kit_world_fill(d,s_settings.world);
 }
 #endif

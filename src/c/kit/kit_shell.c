@@ -126,7 +126,7 @@ void kit_shell_run(const LabDesign *design) {
 #endif
   battery_state_service_subscribe(battery);
   connection_service_subscribe((ConnectionHandlers){.pebble_app_connection_handler=connection});
-  APP_LOG(APP_LOG_LEVEL_INFO,"Watchface kit 2.1.2 started (scenario %d, touch window %dms)",LAB_SCENARIO,KIT_TOUCH_WINDOW_MS);
+  APP_LOG(APP_LOG_LEVEL_INFO,"Watchface kit 2.2.0 started (scenario %d, touch window %dms)",LAB_SCENARIO,KIT_TOUCH_WINDOW_MS);
   app_event_loop();
   tick_timer_service_unsubscribe();accel_tap_service_unsubscribe();
   battery_state_service_unsubscribe();connection_service_unsubscribe();

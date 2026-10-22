@@ -1,4 +1,37 @@
-# Shared kit 2.1.2
+# Shared kit 2.2.0
+
+## 2.2.0 — shared behaviour and emulator support
+
+`kit_calc.h/.c` adds SDK-independent moon phase/lookup angle, nearest-integer
+temperature conversion, event clocks with optional AM/PM and explicit day
+offsets, tri-state daylight, bounded chronological rain/hour queries, and
+64-bit activity estimates. Goal attainment is interpolated from hourly buckets;
+goal-day counts include today and are not streaks. Missing sun events remain
+unknown; the wire format does not distinguish polar day from polar night.
+
+`kit_data.c` supplies `kit_live_data_refresh`, `kit_moon_fill` and `kit_world_fill`.
+Consumers retain their deterministic fixture values and use the same shared
+calculations. The original mean-synodic approximation and Pebble lookup-cosine
+illumination are preserved. No drawing API, artwork, font or layout is added.
+
+`tools/emulator.py` provides disposable-profile sessions, active UUID checks,
+explicit start/stop, typed AppMessage/Clay transport, correlated single weather
+replies and byte-cursor log reports. `tools/emulator_smoke.py` runs common fresh
+default, saved-goal, restart, synthetic weather/cache and detail checks. Use
+pebble-tool's Python, passing one or more built consumer project paths. Consumers
+keep thin entrypoints and their own visual assertions. All frame samples are
+retained; wrap-sized values are flagged as clock-discontinuity candidates.
+
+The session refuses an existing QEMU, owns its processes and test lock, records
+profile recovery paths, and confirms emulator exit before restoring the saved
+profile. Stop/restore failures retain backups rather than deleting them.
+The synthetic fixture uses one fixed current offset for its two-day span; it
+tests transport/cache rather than realistic DST-transition weather. Deterministic
+calendar tests remain the evidence for DST correctness.
+
+AppMessage numbering, protocol version, 204-byte weather snapshot, persistence
+layouts and phone namespaces are unchanged. Valid saved goals remain intact;
+fresh settings retain the 8,000-step default from 2.1.2.
 
 ## 2.1.2 — default step goal (22 October 2026)
 

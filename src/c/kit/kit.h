@@ -1,6 +1,7 @@
 #pragma once
 #include "../lab.h"
 #include "kit_core.h"
+#include "kit_calc.h"
 
 typedef struct {
   uint8_t version, time_mode, temp_unit, world;
@@ -15,6 +16,9 @@ void kit_init(void (*changed)(void));
 void kit_deinit(void);
 void kit_tick(void);
 void kit_fill(LabData *data);
+void kit_live_data_refresh(LabData *data);
+void kit_moon_fill(LabData *data);
+void kit_world_fill(LabData *data, int zone);
 void kit_health_fill(LabData *data);
 void kit_health_init(void);
 void kit_health_deinit(void);

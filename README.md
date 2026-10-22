@@ -1,9 +1,12 @@
 # Pebble watchface kit
 
-Version 2.1.1 adds bounded text consumer settings to 2.1.0; see
+Version 2.2.0 adds shared calculations, live-data assembly and emulator-test
+utilities for Mondrian, Underground, Meridian, Word Clock and Quest. The kit
+focuses on data, behaviour and test support; drawing and artwork stay in the
+faces. Fresh goals default to 8,000 while valid saved goals are preserved. See
 [src/c/kit/KIT.md](src/c/kit/KIT.md).
 
-Shared C and PebbleKit JS for standalone Pebble watchfaces. Version 2.0.0 extracts
+Shared C and PebbleKit JS for standalone Pebble watchfaces. Version 2.0.0 extracted
 Underground kit 1.3 (including Mondrian's recorded-minute HR history fix) into
 one repository. Each PBW includes the code it needs; there is no shared runtime.
 Signal Deck has not been migrated.
