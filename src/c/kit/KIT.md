@@ -33,6 +33,14 @@ AppMessage numbering, protocol version, 204-byte weather snapshot, persistence
 layouts and phone namespaces are unchanged. Valid saved goals remain intact;
 fresh settings retain the 8,000-step default from 2.1.2.
 
+Validation: shared native/phone tests, eight host emulator-utility regressions,
+143,192 independent time-zone comparisons and all 271 consumer render scenes
+pass. All five consumers pass the shared QEMU smoke: fresh 8,000 default,
+persisted 12,500 goal, explicit cold restarts, one correlated synthetic weather
+reply, cache restoration, detail timeout and zero-allocation exits. Each prior
+SDK profile is restored. These checks do not measure physical-watch power or
+CPU timing; raw emulator wall-time samples remain in the reports.
+
 ## 2.1.2 — default step goal (22 October 2026)
 
 New watch settings, new phone settings and the Clay slider default to 8,000
