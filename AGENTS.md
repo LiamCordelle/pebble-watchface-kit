@@ -1,8 +1,16 @@
 # Shared watchface kit
 
-This repository is the single source of shared behaviour for Mondrian and
-Underground. Signal Deck has not been migrated.
+This repository is the single source of shared behaviour for Mondrian,
+Underground, Meridian, Word Clock and Quest. Consumers may have local candidate
+extensions; do not overwrite or treat those as shared releases. Signal Deck has
+not been migrated.
 
+- Decide ownership by reusability, not by where code currently lives or how
+  many faces use it. General calculations belong here even for their first
+  consumer. Moon phase/illumination calculations belong in the kit; moon
+  artwork, placement and styling belong to a face. When a face update touches
+  reusable local logic, extract it here and replace the local implementation
+  with the shared API. Avoid unrelated refactors.
 - Shared health/history, weather/protocol/cache/retries, settings normalization,
   phone messaging, world-clock calculations, lifecycle/touch/timing, common
   rendering helpers and the LabData/LabDesign contract belong here.
@@ -25,3 +33,11 @@ Underground. Signal Deck has not been migrated.
   to release a fix. Ordinary `pebble build` supports local kit development.
 - `main` is the tested integration branch. Bump VERSION for kit releases and
   document changes. Do not publish watchfaces to the Pebble store unless asked.
+- When updating a consumer, check/fetch the kit's latest `origin/main` at the
+  start and use it in the new watchface version. `npm run kit:update` is the
+  guarded update-only path for a clean dependency. Preserve dirty/unpublished
+  work and integrate it before release; report network/integration blockers
+  rather than silently retaining a stale kit. Re-read upgraded instructions,
+  validate against the final kit SHA, and record the dependency gitlink and
+  version/SHA in the consumer release/provenance. A pinned historical build is
+  an explicit exception, not the default update workflow.
